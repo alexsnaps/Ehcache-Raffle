@@ -1,2 +1,16 @@
-This file was created by IntelliJ IDEA 10.0.2 for binding GitHub repository
-This file was modified by IntelliJ IDEA 10.0.2 for binding GitHub repository
+This small application illustrates Ehcache Cache Writers & Cache Loaders.
+
+It is a web application that can be launched using Maven, by running:
+
+mvn jetty:run
+
+This will start jetty and you should be able to connect to http://localhost:8080/raffle/
+When filling out the form, the information will be sent to org.terracotta.ehcache.raffle.web.ParticipateServlet
+Which in turn will check whether the key (the email address) is already present in the cache and then add an entry
+using the putWithWriter method. The "participants" cache is using the org.terracotta.ehcache.raffle.CsvWriter which
+stores cached entries in a CSV file in the user's home driectory.
+
+Going to http://localhost:8080/raffle/winners will trigger an asynchronous bulk load from the CSV file. Upon the first
+request, at the bottom of the page, the registered participants should indicate 0. Wait a little and refresh the page
+until all participants have been loaded... The loading happens through the index.jsp page in the winners directory,
+which asks the Cache to load using org.terracotta.ehcache.raffle.CsvLoader.
